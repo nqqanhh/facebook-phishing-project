@@ -16,7 +16,6 @@ const login = async (req, res) => {
   const emailIsExists = await AccountModel.findOne({ email: email });
   if (emailIsExists) {
     console.log(`email ${email} da ton tai!`);
-    res.json({ message: "email da ton tai" });
   } else {
     // Lưu thông tin vào file log
     // const logData = `Email: ${email} | Password: ${password}\n`;
