@@ -89,7 +89,7 @@ const sendEmail = async (req, res) => {
   });
 
   const mailOptions = {
-    from: EMAIL_USERNAME,
+    from: process.env.EMAIL_USERNAME,
     to: email,
     subject: `Tài khoản Facebook của bạn đã gặp vấn đề`,
     text: `Hãy bấm vào đường link này để xem chi tiết.
